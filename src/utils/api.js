@@ -1,29 +1,20 @@
 import axios from "axios";
 
-export const fetchDataFromApi = async (url) => {
-    // Check if the Stripe app key is defined
-    if (!process.env.REACT_APP_STRIPE_APP_KEY) {
-        throw new Error('Stripe app key not provided.');
-    }
+const stripeAppKey = "3154fdeaf6bc8df5326f8303d869ad2d90a17f1a891afed2e929803ef566fbfedb5cd6e7521601c68c7b0b545ed8ec2e18527598adb5af24a26052cfa2284c481fe8541793d14889dbba09017f4cdb852c8f419732879c0ad6aa18c6d799f4ca5deb1469cc85ce78f28d9ddbea1a19eb92a2b30944a58c9fa34cc21389916f26";
+const devUrl = "https://testingaa.onrender.com";
 
-    const params = {
-        headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_STRIPE_APP_KEY}`,
-        },
-    };
-
-    try {
-        const response = await axios.get(process.env.REACT_APP_DEV_URL + url, params);
-        return response.data;
-    } catch (error) {
-        if (error.response) {
-            throw new Error(`Request failed with status ${error.response.status}`);
-        } else if (error.request) {
-            // The request was made but check if response is 404
-            throw new Error('No response received from the server.');
-        } else {
-            // Something happened in setting up the request or handling the response
-            throw new Error('Error setting up the request or handling the response.');
-        }
-    }
+const params = {
+    headers: {
+        Authorization: `Bearer ${stripeAppKey}`,
+    },
 };
+
+export const fetchDataFromApi = async (url) => {
+    try {
+        const { data } = await axios.get(devUrl + url, params);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
